@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "LPU Internet Auto-Login",
+  "version": "1.0",
+  "description": "Automatically login to LPU internet portal",
+
+  "icons": {
+    "16": "icons/icon.png",
+    "48": "icons/icon.png",
+    "128": "icons/icon.png"
+  },
+
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://internet.lpu.in/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LPU Internet Auto-Login",
+    "default_icon": {
+      "16": "icons/icon.png",
+      "48": "icons/icon.png",
+      "128": "icons/icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://internet.lpu.in/24online/webpages/client.jsp",
+        "https://internet.lpu.in/24online/servlet/E24onlineHTTPClient"
+      ],
+      "js": ["content-script.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
