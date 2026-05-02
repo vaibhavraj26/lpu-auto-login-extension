@@ -55,7 +55,7 @@ Console Errors:
 2. Create a new branch: `git checkout -b feature-name`
 3. Make your changes
 4. Test thoroughly:
-   - Test on both login URLs
+   - Test on all login URLs
    - Open DevTools console and check for errors
    - Test with auto-login enabled and disabled
 5. Commit with clear messages: `git commit -m "Add feature description"`
@@ -81,8 +81,7 @@ cd lpu-internet-auto-login
 Before submitting a PR, test:
 
 - [ ] Extension loads without errors in Chrome
-- [ ] Form fills correctly on https://internet.lpu.in/24online/webpages/client.jsp
-- [ ] Form fills correctly on https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
+- [ ] Form fills correctly on all the URLs
 - [ ] Auto-login works when enabled
 - [ ] Credentials save and persist
 - [ ] Console (F12) shows no errors

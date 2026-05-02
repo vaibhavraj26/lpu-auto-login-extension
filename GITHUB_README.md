@@ -7,7 +7,7 @@ A Chrome extension that automatically logs you into the LPU internet portal with
 - 🔐 Secure credential storage using Chrome's encrypted storage
 - ⚡ Auto-fills login forms in seconds
 - 🚀 Optional auto-login on page load
-- 🔄 Works with both LPU login endpoints
+- 🔄 Works with all LPU login endpoints
 - 💻 No external dependencies
 - 🛡️ All data stays local on your computer
 
@@ -26,25 +26,38 @@ A Chrome extension that automatically logs you into the LPU internet portal with
 
 1. Click the extension icon in your Chrome toolbar
 2. Enter your:
-   - Registration Number
-   - Internet Password
-3. Check "Auto-login when page loads" (optional)
-4. Click "Save & Auto-Login"
+   - **Registration Number**
+   - **UMS Password** (primary password field)
+3. Choose one of:
+   - ✅ **Same password for Internet** (checked by default) - Uses UMS password for both portals
+   - ❌ **Different passwords** - Uncheck to reveal separate Internet password field
+4. Check "Auto-login when page loads" (optional)
+5. Click "Save & Auto-Login"
+
+**Password Visibility:** Click the 👁️ eye icon next to any password field to show/hide the password
 
 ## 📖 Documentation
 
 - [README.md](README.md) - Full documentation
 - [QUICK_START.md](QUICK_START.md) - Get started in 5 minutes
+- [CHANGELOG.md](CHANGELOG.md) - Version history and updates
+- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) - Project folder layout
 - [CONFIGURATION.md](CONFIGURATION.md) - Advanced settings
 - [DEBUGGING_GUIDE.md](DEBUGGING_GUIDE.md) - Fix form detection issues
 - [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
 
-## 🔗 Supported URLs
+## 🔗 Supported Portals
 
-The extension works with both LPU login endpoints:
+Version 1.0.1 supports **3 LPU login portals**:
 
-- `https://internet.lpu.in/24online/webpages/client.jsp`
-- `https://internet.lpu.in/24online/servlet/E24onlineHTTPClient`
+| Portal | URL | Auto-Submit? |
+|--------|-----|----------|
+| **Internet** | https://internet.lpu.in/24online/webpages/client.jsp | ✅ Yes |
+| **Internet (Alt)** | https://internet.lpu.in/24online/servlet/E24onlineHTTPClient | ✅ Yes |
+| **UMS** | https://ums.lpu.in/lpuums/ | ❌ Manual (CAPTCHA) |
+| **My Account** | https://myaccountinternet.lpu.in/24online/myaccountloginpage/myaccountlogin.do | ✅ Yes |
+
+**Note:** UMS portal requires manual CAPTCHA entry after credentials are filled
 
 ## 🛡️ Security
 

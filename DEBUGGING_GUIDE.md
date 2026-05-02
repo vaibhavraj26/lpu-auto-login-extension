@@ -1,166 +1,189 @@
-# Debugging Guide - Form Field Selectors
+# Debugging Guide
 
-If the extension isn't auto-filling the form, you may need to find the exact CSS selectors for your form fields. Follow these steps:
+## How the Extension Works
 
-## Finding the Form Field Selectors
+The extension works in **3 simple steps**:
 
-### Step 1: Open the Login Page
-1. Go to one of the login pages:
-   - https://internet.lpu.in/24online/webpages/client.jsp, or
-   - https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
-2. Right-click on the page → Select "Inspect" (or press F12)
-3. The Developer Tools panel will open at the bottom
+1. **Detect** - Checks the website URL to identify which login portal you're on
+2. **Find** - Searches the page HTML to find the username, password, and submit button fields
+3. **Fill** - Puts your credentials into those fields and clicks submit
 
-### Step 2: Find the Registration Number Field
-1. In Developer Tools, click the "Element Inspector" icon (arrow in a box, top-left)
-2. Click on the Registration Number input field
-3. In the Inspector, you'll see the HTML for that field
-4. Note one of these attributes:
-   - `id` attribute (example: `id="userId"`)
-   - `name` attribute (example: `name="registration"`)
-   - `placeholder` attribute (example: `placeholder="Enter Registration No"`)
-   - `class` attribute (example: `class="input-field"`)
+If any of these steps fail, the auto-login won't work.
 
-Example HTML you might see:
+## Understanding Form Fields
+
+Every login form has HTML elements. For example:
+
 ```html
-<input type="text" id="userId" name="registration" placeholder="Registration Number">
+<input type="text" id="username" placeholder="Enter username">
+<input type="password" id="password" placeholder="Enter password">
+<button id="loginBtn">Login</button>
 ```
 
-### Step 3: Find the Password Field
-1. Click on the Internet Password input field
-2. Note its attributes (id, name, placeholder, or class)
+Each element has **attributes** that identify it:
+- `id` - Unique identifier (like an ID card)
+- `name` - Field name
+- `placeholder` - Hint text shown in the field
+- `class` - CSS class for styling
+- `type` - What kind of input (text, password, checkbox, etc.)
 
-Example:
-```html
-<input type="password" name="password" placeholder="Internet Password">
-```
+## How the Extension Finds Fields
 
-### Step 4: Find the Checkbox (if it exists)
-1. Click on the checkbox
-2. Note its attributes
-
-Example:
-```html
-<input type="checkbox" id="terms" name="agree">
-```
-
-### Step 5: Find the Login Button
-1. Click on the Login button
-2. Note its attributes or text content
-
-Example:
-```html
-<button type="submit" id="loginBtn">LOGIN</button>
-<!-- or -->
-<input type="submit" value="LOGIN">
-```
-
-## Updating the content-script.js
-
-Once you have the selectors, update `extension/content-script.js`:
-
-### For the Registration Number Field:
-
-If the field has an `id`, replace this line in `performLogin()`:
-```javascript
-let regNoInput = document.getElementById('YOUR_FIELD_ID');
-```
-
-If it has a `name` attribute:
-```javascript
-let regNoInput = document.querySelector('input[name="YOUR_FIELD_NAME"]');
-```
-
-### For the Password Field:
+The extension uses these attributes as a **"search address"** to locate fields on the page:
 
 ```javascript
-let passwordInput = document.querySelector('input[name="YOUR_PASSWORD_FIELD_NAME"]');
+// "Find an input with id='username'"
+document.querySelector('#username')
+
+// "Find an input with name='pwd'"
+document.querySelector('input[name="pwd"]')
+
+// "Find the first password input"
+document.querySelector('input[type="password"]')
 ```
 
-### For the Checkbox:
+## When Auto-Login Fails
+
+**Reason 1: Wrong Selector**
+- The extension is looking for `#username` but the actual field is `#loginId`
+- The field exists, but the extension can't find it
+
+**Reason 2: Fields Don't Exist Yet**
+- The page is still loading
+- JavaScript on the page hasn't created the fields yet
+- The extension tries to fill fields that aren't there
+
+**Reason 3: Wrong Website**
+- The extension only works on websites it's configured for
+- You need to add the website to the manifest first
+
+## How to Add a New Website
+
+### Understanding the Process
+
+1. **Inspect the page** - Look at the HTML to find field selectors
+2. **Write a detector** - Add code to check if you're on that website
+3. **Write a filler** - Add code to fill the fields with your credentials
+4. **Register the website** - Tell the extension it can access that domain
+
+### The Code Structure
+
+Every login portal needs this pattern in `content-script.js`:
 
 ```javascript
-let checkbox = document.getElementById('YOUR_CHECKBOX_ID');
-// OR
-let checkbox = document.querySelector('input[type="checkbox"]');
-```
-
-### For the Login Button:
-
-If it's a button with id:
-```javascript
-let loginButton = document.getElementById('YOUR_BUTTON_ID');
-```
-
-If it's a button with text:
-```javascript
-let loginButton = Array.from(document.querySelectorAll('button'))
-    .find(btn => btn.textContent.includes('LOGIN'));
-```
-
-## Example: Complete Update
-
-If you find:
-- Registration: `<input type="text" id="loginId">`
-- Password: `<input type="password" name="passwd">`
-- Checkbox: `<input type="checkbox" id="rememberMe">`
-- Button: `<button id="submitBtn">LOGIN</button>`
-
-Update `content-script.js` function to:
-
-```javascript
-function performLogin(data) {
-    try {
-        let regNoInput = document.getElementById('loginId');
-        let passwordInput = document.querySelector('input[name="passwd"]');
-        let checkbox = document.getElementById('rememberMe');
-        let loginButton = document.getElementById('submitBtn');
-        
-        if (!regNoInput || !passwordInput || !loginButton) {
-            console.warn('Could not find all required form elements');
-            return;
-        }
-        
-        regNoInput.value = data.regNo;
-        regNoInput.dispatchEvent(new Event('input', { bubbles: true }));
-        
-        passwordInput.value = data.password;
-        passwordInput.dispatchEvent(new Event('input', { bubbles: true }));
-        
-        if (checkbox && !checkbox.checked) {
-            checkbox.click();
-        }
-        
-        setTimeout(() => {
-            if (loginButton) {
-                loginButton.click();
-            }
-        }, 500);
-        
-    } catch (error) {
-        console.error('Error during auto-login:', error);
+// Step 1: Detect (check the URL)
+if (window.location.href.includes('example-site.com')) {
+    
+    // Step 2: Find (locate the fields)
+    let username = document.querySelector('#YOUR_USERNAME_SELECTOR');
+    let password = document.querySelector('#YOUR_PASSWORD_SELECTOR');
+    let button = document.querySelector('#YOUR_BUTTON_SELECTOR');
+    
+    // Step 3: Fill and Submit
+    if (username && password && button) {
+        username.value = 'YOUR_USERNAME_VALUE';
+        password.value = 'YOUR_PASSWORD_VALUE';
+        button.click();
     }
+    
+    return;
 }
 ```
 
-## Reload the Extension
+## Step-by-Step: Finding Your Selectors
 
-After updating `content-script.js`:
+### 1. Open the Login Page
+- Visit the website you want to add
+- Right-click on the username field
+- Select "Inspect" (or press F12)
+
+### 2. Read the HTML
+Look at the HTML code in the Inspector window. Find:
+- **Username field** - What are its `id`, `name`, `placeholder`, or `class`?
+- **Password field** - Same as above
+- **Submit button** - What is its `id`, `name`, or text content?
+
+### 3. Write the Selector
+Use what you found to create a selector:
+
+If the HTML is: `<input id="user" type="text">`
+Write: `document.querySelector('#user')`
+
+If the HTML is: `<input name="email" type="text">`
+Write: `document.querySelector('input[name="email"]')`
+
+If the HTML is: `<button>Sign In</button>`
+Write: `document.querySelector('button')`
+
+## Common Selector Patterns
+
+```javascript
+// By ID (most reliable)
+document.querySelector('#elementId')
+document.getElementById('elementId')
+
+// By Name
+document.querySelector('input[name="fieldName"]')
+
+// By Type
+document.querySelector('input[type="password"]')
+
+// By Class
+document.querySelector('.className')
+
+// By Placeholder Text
+document.querySelector('input[placeholder*="word"]')
+
+// Any Button
+document.querySelector('button')
+
+// First Input
+document.querySelector('input')
+```
+
+## Testing Your Changes
+
+After adding a new website:
+
 1. Go to `chrome://extensions/`
-2. Find "LPU Internet Auto-Login"
-3. Click the refresh icon
-4. Try logging in again
+2. Find the extension
+3. Click the **Reload** button ↻
+4. Visit the login page
+5. Open DevTools (F12) → Console
+6. Look for error messages or success logs
 
-## Still Not Working?
+## Troubleshooting
 
-1. Open Chrome Developer Tools (F12) on the login page
-2. Go to the "Console" tab
-3. Look for error messages
-4. Copy any errors and use them to troubleshoot
+**Problem:** Fields are found but not filled
+- Solution: Check if the website uses JavaScript to validate inputs. You might need to dispatch more events like 'blur' or 'change'
 
-Common CSS Selectors:
-- `document.getElementById('id')` - Find by id attribute
-- `document.querySelector('input[name="fieldname"]')` - Find by name
-- `document.querySelector('input[type="password"]')` - Find by input type
-- `document.querySelector('.classname')` - Find by class
-- `document.querySelector('button:contains("text")')` - Find button by text
+**Problem:** Form doesn't submit
+- Solution: The button selector might be wrong. Try clicking it manually to verify it's the right button
+
+**Problem:** Extension runs but shows "Failed to find fields"
+- Solution: Your selectors don't match the actual HTML. Use Inspect again and verify the `id`, `name`, etc.
+
+**Problem:** Nothing happens at all
+- Solution: The website URL might not be in `manifest.json` host_permissions. Add it.
+
+## Key Concepts
+
+| Concept | Meaning |
+|---------|---------|
+| **DOM** | The HTML structure of a webpage |
+| **Selector** | A way to find an element in the HTML |
+| **querySelector** | A function to find an element using a selector |
+| **Event** | Something that happens (user types, clicks, form submits) |
+| **dispatchEvent** | Simulating an event to trigger validation/changes |
+
+## When to Ask for Help
+
+If you:
+- Can't find the right selectors after inspecting
+- Understand the concept but unsure about syntax
+- Need support for a new website
+
+Share:
+1. The website URL
+2. Screenshot of the HTML (from Inspect)
+3. What you've tried so far

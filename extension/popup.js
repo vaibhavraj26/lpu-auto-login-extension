@@ -1,21 +1,39 @@
 document.getElementById('saveBtn').addEventListener('click', saveCredentials);
+document.getElementById('samePassword').addEventListener('change', toggleUmsPasswordField);
+document.getElementById('umsToggle').addEventListener('mousedown', () => togglePasswordVisibility('umsPassword', true));
+document.getElementById('umsToggle').addEventListener('mouseup', () => togglePasswordVisibility('umsPassword', false));
+document.getElementById('umsToggle').addEventListener('mouseleave', () => togglePasswordVisibility('umsPassword', false));
+document.getElementById('internetToggle').addEventListener('mousedown', () => togglePasswordVisibility('internetPassword', true));
+document.getElementById('internetToggle').addEventListener('mouseup', () => togglePasswordVisibility('internetPassword', false));
+document.getElementById('internetToggle').addEventListener('mouseleave', () => togglePasswordVisibility('internetPassword', false));
 
 // Load saved credentials when popup opens
 document.addEventListener('DOMContentLoaded', loadCredentials);
 
 function saveCredentials() {
     const regNo = document.getElementById('regNo').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const umsPassword = document.getElementById('umsPassword').value.trim();
+    const samePassword = document.getElementById('samePassword').checked;
     const autoLogin = document.getElementById('autoLogin').checked;
     
-    if (!regNo || !password) {
+    if (!regNo || !umsPassword) {
         showStatus('Please fill in all fields', 'error');
         return;
     }
     
+    let internetPassword = umsPassword;
+    if (!samePassword) {
+        internetPassword = document.getElementById('internetPassword').value.trim();
+        if (!internetPassword) {
+            showStatus('Please fill in all fields', 'error');
+            return;
+        }
+    }
+    
     const data = {
         regNo: regNo,
-        password: password,
+        internetPassword: internetPassword,
+        umsPassword: umsPassword,
         autoLogin: autoLogin
     };
     
@@ -34,17 +52,55 @@ function saveCredentials() {
 }
 
 function loadCredentials() {
-    chrome.storage.sync.get(['regNo', 'password', 'autoLogin'], function(result) {
+    chrome.storage.sync.get(['regNo', 'internetPassword', 'umsPassword', 'autoLogin'], function(result) {
         if (result.regNo) {
             document.getElementById('regNo').value = result.regNo;
         }
-        if (result.password) {
-            document.getElementById('password').value = result.password;
+        if (result.umsPassword) {
+            document.getElementById('umsPassword').value = result.umsPassword;
         }
+        
+        // Check if both passwords are the same
+        const samePassword = result.internetPassword === result.umsPassword;
+        document.getElementById('samePassword').checked = samePassword;
+        
+        if (result.internetPassword && !samePassword) {
+            document.getElementById('internetPassword').value = result.internetPassword;
+        }
+        
         if (result.autoLogin !== undefined) {
             document.getElementById('autoLogin').checked = result.autoLogin;
         }
+        
+        // Update UI based on checkbox state
+        updateInternetPasswordVisibility();
     });
+}
+
+function toggleUmsPasswordField() {
+    updateInternetPasswordVisibility();
+}
+
+function updateInternetPasswordVisibility() {
+    const samePassword = document.getElementById('samePassword').checked;
+    const internetPasswordGroup = document.getElementById('internetPasswordGroup');
+    const internetPasswordInput = document.getElementById('internetPassword');
+    
+    if (samePassword) {
+        internetPasswordGroup.style.display = 'none';
+        internetPasswordInput.value = '';
+    } else {
+        internetPasswordGroup.style.display = 'block';
+    }
+}
+
+function togglePasswordVisibility(fieldId, show) {
+    const input = document.getElementById(fieldId);
+    if (show) {
+        input.type = 'text';
+    } else {
+        input.type = 'password';
+    }
 }
 
 function showStatus(message, type) {

@@ -75,25 +75,6 @@ lpu-internet-auto-login/
 
 ## 🔧 Key Configuration Details
 
-### manifest.json Highlights
-
-```json
-{
-  "manifest_version": 3,              // Latest Chrome extension format
-  "name": "LPU Internet Auto-Login",
-  "version": "1.0",
-  "content_scripts": [
-    {
-      "matches": [
-        "https://internet.lpu.in/24online/webpages/client.jsp",
-        "https://internet.lpu.in/24online/servlet/E24onlineHTTPClient"
-      ],
-      "js": ["content-script.js"]      // Runs on both login URLs
-    }
-  ]
-}
-```
-
 ### What Each Script Does
 
 1. **popup.js**

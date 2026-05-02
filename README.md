@@ -1,12 +1,10 @@
 # LPU Internet Auto-Login Extension
 
-This Chrome extension automatically logs you into the LPU internet portal. It supports both login endpoints:
-- https://internet.lpu.in/24online/webpages/client.jsp
-- https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
+This Chrome extension automatically logs you into the LPU portals. It supports all login endpoints:
 
 ## Features
 
-- ✅ Saves your registration number and internet password securely
+- ✅ Saves your registration number and password securely
 - ✅ Auto-fills the login form
 - ✅ Automatically clicks the checkbox
 - ✅ Submits the login form with one click

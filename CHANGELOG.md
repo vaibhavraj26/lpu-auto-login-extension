@@ -5,7 +5,44 @@ All notable changes to the LPU Internet Auto-Login Extension will be documented 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024
+## [1.0.1] - 2026-05
+
+### Added
+- Support for **UMS Portal** (https://ums.lpu.in/lpuums/)
+  - Fills User ID (#txtU) and Password (#TxtpwdAutoId_8767)
+  - Does not auto-submit (handles CAPTCHA requirement)
+- Support for **My Account Internet Portal** (https://myaccountinternet.lpu.in/)
+  - Fills username as `regNo@lpu.com` format
+  - Auto-fills password and submits form
+- **Separate password fields** for UMS and Internet logins
+- **"Same password" checkbox** for convenience when credentials match
+- **Password visibility toggle** (eye icon) - click and hold to reveal password
+- **Duplicate login prevention** - prevents multiple auto-login attempts on page reload
+
+### Improved
+- Optimized auto-fill delays for faster login:
+  - UMS: 1500ms → 300ms ⚡
+  - Internet: 1000ms → 200ms ⚡
+  - Button submit: 100ms → 50ms ⚡
+- Cleaner console output - removed debug logs, kept only error warnings
+- Better form field detection with smarter selectors
+
+### Changed
+- UMS password is now the primary field (Internet password is secondary)
+- Form field detection is page-aware (different strategies for each portal)
+- Increased manifest version to 3.0.1
+
+### Fixed
+- Page reload issue after filling regNo on UMS page
+- Console errors from duplicate auto-login attempts
+- Password field visibility on UMS page
+
+### Technical Details
+- Added support for 3 different domain hosts in manifest
+- Implemented sessionStorage for login attempt throttling
+- Smart event dispatching to avoid triggering page-reload handlers
+
+## [1.0.0] - 2026-04
 
 ### Added
 - Initial release of LPU Internet Auto-Login Extension

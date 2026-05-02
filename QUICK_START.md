@@ -2,7 +2,7 @@
 
 ## What You Have
 
-I've created a **Chrome Extension** that automatically logs you into the LPU internet portal. Here's what was created:
+I've created a **Chrome Extension** that automatically logs you into the LPU portals. Here's what was created:
 
 ```
 Internet Ext/
@@ -86,9 +86,7 @@ You              Extension           Login Page
 
 The extension uses smart detection to find the form fields. If it doesn't work:
 
-1. **Check the URL**: Make sure you're on one of these URLs:
-   - https://internet.lpu.in/24online/webpages/client.jsp
-   - https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
+1. **Check the URL**: Make sure you're on the correct URLs:
 2. **Open DevTools**: Press F12, go to Console tab
 3. **Check for errors**: Any red messages?
 4. **See DEBUGGING_GUIDE.md** for detailed instructions to find the correct form selectors

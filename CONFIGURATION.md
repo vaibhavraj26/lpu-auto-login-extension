@@ -9,7 +9,9 @@ extension/
 ├── manifest.json       # Extension configuration (Chrome Web Store settings)
 ├── popup.html         # Settings UI (what you see when clicking the icon)
 ├── popup.js           # Settings logic (handles saving credentials)
-└── content-script.js  # Login automation (runs on the login page)
+├── content-script.js  # Login automation (runs on the login page)
+└── icons/
+    └── icon.png       # Extension icon (displayed in Chrome)
 ```
 
 ## manifest.json Configuration
@@ -20,7 +22,7 @@ The `manifest.json` file contains the extension metadata:
 {
   "manifest_version": 3,              // Chrome extension version (3 is latest)
   "name": "LPU Internet Auto-Login",  // Extension name shown in Chrome
-  "version": "1.0",                   // Your extension version
+  "version": "1.0.1",                   // Your extension version
   "description": "...",               // Shown in Chrome extensions page
   "permissions": [...],               // What the extension can access
   "host_permissions": [...],          // Which websites it can interact with
@@ -33,18 +35,24 @@ The `manifest.json` file contains the extension metadata:
 **host_permissions** - Controls which websites the extension works on:
 ```json
 "host_permissions": [
-  "https://internet.lpu.in/*"  // Allows all URLs on internet.lpu.in domain
+  "https://internet.lpu.in/*",
+  "https://ums.lpu.in/*",
+  "https://myaccountinternet.lpu.in/*"
 ]
 ```
 
-This permission allows the extension to work on both LPU login endpoints:
-- https://internet.lpu.in/24online/webpages/client.jsp
-- https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
+This permission allows the extension to work on all three LPU login portals:
+- **Internet Portal**: https://internet.lpu.in/24online/webpages/client.jsp
+- **Internet Portal (Alternative)**: https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
+- **UMS Portal**: https://ums.lpu.in/lpuums/
+- **My Account Portal**: https://myaccountinternet.lpu.in/24online/myaccountloginpage/myaccountlogin.do
 
 To add more websites, add another line:
 ```json
 "host_permissions": [
   "https://internet.lpu.in/*",
+  "https://ums.lpu.in/*",
+  "https://myaccountinternet.lpu.in/*",
   "https://another-site.com/*"
 ]
 ```
@@ -88,7 +96,7 @@ Credentials are stored in Chrome's `sync` storage, which means:
 - ❌ Not accessible to website JavaScript
 - ❌ Not stored in plain text
 
-To access stored credentials manually (in browser console):
+To access stored credentials manually (in browser extention console):
 ```javascript
 chrome.storage.sync.get(['regNo', 'password', 'autoLogin'], function(result) {
     console.log(result);
@@ -101,13 +109,27 @@ The `content-script.js` is the most important file for form interaction.
 
 ### How Form Detection Works:
 
-The script uses multiple strategies to find form fields:
+The script uses different detection strategies for each login page:
 
+**For UMS Portal (ums.lpu.in):**
+- Uses direct selectors: `input[name="txtU"]` or `#txtU` for username
+- Uses direct selectors: `input[name="TxtpwdAutoId_8767"]` or `#TxtpwdAutoId_8767` for password
+- Does NOT auto-submit (has CAPTCHA)
+
+**For My Account Portal (myaccountinternet.lpu.in):**
+- Uses direct selectors: `#username` for username
+- Uses direct selectors: `#password` for password
+- Uses direct selectors: `#Go` for login button
+- Auto-submits the form
+
+**For Internet Portal (internet.lpu.in):**
+The script tries multiple strategies in order:
 1. **Placeholder matching**: `placeholder*="registration"`
 2. **Label matching**: Looks for labels with text like "registration"
-3. **Name attribute**: `name="registrationNo"`
-4. **Type matching**: `input[type="password"]`
+3. **Name attribute**: `name="registrationNo"`, `name="regNo"`, `name="userid"`, `name="username"`
+4. **Type matching**: `input[type="password"]` for password field
 5. **Fallback**: First text input, first password input
+6. Auto-detects login button by type or text content
 
 ### Form Field Timing:
 
@@ -213,12 +235,38 @@ log('Registration input:', regNoInput);
 ```
 
 ### Check Stored Credentials:
-Run in browser console:
+
+**Method 1: Using Extension Popup Console (Easiest)**
+1. Click the extension icon in Chrome toolbar to open the popup
+2. While popup is open, press `F12` to open DevTools
+3. Go to Console tab
+4. Run:
 ```javascript
 chrome.storage.sync.get(null, function(items) {
     console.log('Stored credentials:', items);
 });
 ```
+
+**Method 2: Using chrome://extensions**
+1. Click the extension icon to open the popup (keep it open)
+2. Go to `chrome://extensions/`
+3. Find "LPU Internet Auto-Login" extension
+4. Click "Details" button
+5. Click "Inspect views" (now you'll see popup.html since it's open)
+6. DevTools opens → Go to Console tab
+7. Run the command above
+
+**What you should see:**
+```javascript
+{
+  regNo: "12325142",
+  internetPassword: "your_password",
+  umsPassword: "ums_password",
+  autoLogin: true
+}
+```
+
+**⚠️ Important:** The popup must be OPEN for "Inspect views" to show it. If nothing shows, make sure you clicked the extension icon first!
 
 ---
 

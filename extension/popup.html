@@ -87,6 +87,34 @@
             color: #721c24;
             display: block;
         }
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+            flex: 1;
+            margin: 0;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            color: #666;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-toggle:hover {
+            color: #4CAF50;
+        }
     </style>
 </head>
 <body>
@@ -99,8 +127,26 @@
         </div>
         
         <div class="form-group">
-            <label for="password">Internet Password:</label>
-            <input type="password" id="password" placeholder="Enter your internet password">
+            <label for="umsPassword">UMS Password:</label>
+            <div class="password-container">
+                <input type="password" id="umsPassword" placeholder="Enter your UMS password">
+                <button type="button" class="password-toggle" id="umsToggle" title="Show/Hide password">👁️</button>
+            </div>
+        </div>
+        
+        <div class="checkbox-group">
+            <label for="samePassword">
+                <input type="checkbox" id="samePassword" checked>
+                Same password for Internet
+            </label>
+        </div>
+        
+        <div class="form-group" id="internetPasswordGroup" style="display: none;">
+            <label for="internetPassword">Internet Password:</label>
+            <div class="password-container">
+                <input type="password" id="internetPassword" placeholder="Enter your internet password">
+                <button type="button" class="password-toggle" id="internetToggle" title="Show/Hide password">👁️</button>
+            </div>
         </div>
         
         <div class="checkbox-group">
