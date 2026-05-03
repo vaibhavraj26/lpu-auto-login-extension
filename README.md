@@ -96,4 +96,4 @@ If you encounter issues:
 
 ---
 
-**Note**: This extension is for personal use only. Do not share your credentials or extension installation.
+**Note**: This extension is for personal use only. Do not share your credentials.
