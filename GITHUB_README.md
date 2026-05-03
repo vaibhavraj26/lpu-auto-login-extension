@@ -48,7 +48,7 @@ A Chrome extension that automatically logs you into the LPU internet portal with
 
 ## 🔗 Supported Portals
 
-Version 1.0.1 supports **3 LPU login portals**:
+Version 1.0.1 supports **4 LPU login portals**:
 
 | Portal | URL | Auto-Submit? |
 |--------|-----|----------|
@@ -56,8 +56,10 @@ Version 1.0.1 supports **3 LPU login portals**:
 | **Internet (Alt)** | https://internet.lpu.in/24online/servlet/E24onlineHTTPClient | ✅ Yes |
 | **UMS** | https://ums.lpu.in/lpuums/ | ❌ Manual (CAPTCHA) |
 | **My Account** | https://myaccountinternet.lpu.in/24online/myaccountloginpage/myaccountlogin.do | ✅ Yes |
+| **LPULive** | https://lpulive.lpu.in/ | ✅ Yes (after button enables) |
 
-**Note:** UMS portal requires manual CAPTCHA entry after credentials are filled
+**Note:** UMS portal requires manual CAPTCHA entry after credentials are filled.
+LPULive credentials are auto-filled, then the extension submits automatically when the login button becomes enabled.
 
 ## 🛡️ Security
 

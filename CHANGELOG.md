@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for **My Account Internet Portal** (https://myaccountinternet.lpu.in/)
   - Fills username as `regNo@lpu.com` format
   - Auto-fills password and submits form
+- Support for **LPULive Portal** (https://lpulive.lpu.in/)
+  - Fills registration number and UMS password
+  - Submits when the login button becomes enabled (e.g., after CAPTCHA)
 - **Separate password fields** for UMS and Internet logins
 - **"Same password" checkbox** for convenience when credentials match
 - **Password visibility toggle** (eye icon) - click and hold to reveal password

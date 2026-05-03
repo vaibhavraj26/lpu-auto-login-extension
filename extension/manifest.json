@@ -17,8 +17,10 @@
   ],
   "host_permissions": [
     "https://internet.lpu.in/*",
+    "https://10.10.0.1/*",
     "https://ums.lpu.in/*",
-    "https://myaccountinternet.lpu.in/*"
+    "https://myaccountinternet.lpu.in/*",
+    "https://lpulive.lpu.in/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -32,8 +34,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://internet.lpu.in/24online/webpages/client.jsp",
-        "https://internet.lpu.in/24online/servlet/E24onlineHTTPClient"
+        "https://internet.lpu.in/*",
+        "https://10.10.0.1/*"
       ],
       "js": ["content-script.js"],
       "run_at": "document_end"
@@ -43,11 +45,18 @@
         "https://ums.lpu.in/*"
       ],
       "js": ["content-script.js"],
-      "run_at": "document_start"
+      "run_at": "document_end"
     },
     {
       "matches": [
-        "https://myaccountinternet.lpu.in/24online/myaccountloginpage/myaccountlogin.do*"
+        "https://myaccountinternet.lpu.in/*"
+      ],
+      "js": ["content-script.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://lpulive.lpu.in/*"
       ],
       "js": ["content-script.js"],
       "run_at": "document_end"
