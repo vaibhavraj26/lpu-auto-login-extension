@@ -54,7 +54,7 @@ Version 1.0.1 supports **4 LPU login portals**:
 |--------|-----|----------|
 | **Internet** | https://internet.lpu.in/24online/webpages/client.jsp | ✅ Yes |
 | **Internet (Alt)** | https://internet.lpu.in/24online/servlet/E24onlineHTTPClient | ✅ Yes |
-| **UMS** | https://ums.lpu.in/lpuums/ | ❌ Manual (CAPTCHA) |
+| **UMS** | https://ums.lpu.in/lpuums/ | ✅ Yes (after button enables) |
 | **My Account** | https://myaccountinternet.lpu.in/24online/myaccountloginpage/myaccountlogin.do | ✅ Yes |
 | **LPULive** | https://lpulive.lpu.in/ | ✅ Yes (after button enables) |
 
