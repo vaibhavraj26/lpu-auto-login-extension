@@ -2,6 +2,13 @@
 
 This Chrome extension automatically logs you into the LPU portals. It supports all login endpoints:
 
+### Supported Portals
+- 📱 Internet Portal: https://internet.lpu.in/
+- 🔐 UMS Portal: https://ums.lpu.in/
+- 📊 My Account Portal: https://myaccountinternet.lpu.in/
+- 🎓 LPULive Portal: https://lpulive.lpu.in/
+- 📚 MyClass Portal: https://myclass.lpu.in/
+
 ## Features
 
 - ✅ Saves your registration number and password securely

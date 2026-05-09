@@ -36,16 +36,22 @@ The `manifest.json` file contains the extension metadata:
 ```json
 "host_permissions": [
   "https://internet.lpu.in/*",
+  "https://10.10.0.1/*",
   "https://ums.lpu.in/*",
-  "https://myaccountinternet.lpu.in/*"
+  "https://myaccountinternet.lpu.in/*",
+  "https://lpulive.lpu.in/*",
+  "https://myclass.lpu.in/*"
 ]
 ```
 
-This permission allows the extension to work on all three LPU login portals:
+This permission allows the extension to work on all LPU login portals:
 - **Internet Portal**: https://internet.lpu.in/24online/webpages/client.jsp
 - **Internet Portal (Alternative)**: https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
+- **IP-based Internet Portal**: https://10.10.0.1/
 - **UMS Portal**: https://ums.lpu.in/lpuums/
 - **My Account Portal**: https://myaccountinternet.lpu.in/24online/myaccountloginpage/myaccountlogin.do
+- **LPULive Portal**: https://lpulive.lpu.in/
+- **MyClass Portal**: https://myclass.lpu.in/
 
 To add more websites, add another line:
 ```json

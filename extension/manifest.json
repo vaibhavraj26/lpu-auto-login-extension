@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LPU Internet Auto-Login",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Automatically login to LPU internet portal",
 
   "icons": {
@@ -20,7 +20,9 @@
     "https://10.10.0.1/*",
     "https://ums.lpu.in/*",
     "https://myaccountinternet.lpu.in/*",
-    "https://lpulive.lpu.in/*"
+    "https://lpulive.lpu.in/*",
+    "https://myclass.lpu.in/*",
+    "https://myexam.lpu.in/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -43,6 +45,14 @@
     {
       "matches": [
         "https://ums.lpu.in/*"
+      ],
+      "js": ["content-script.js"],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://myexam.lpu.in/*",
+        "https://myclass.lpu.in/*"
       ],
       "js": ["content-script.js"],
       "run_at": "document_end"

@@ -5,11 +5,19 @@ All notable changes to the LPU Internet Auto-Login Extension will be documented 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-05
+
+### Added
+- Support for **MyClass Portal** (https://myclass.lpu.in/)
+  - Fills username field with registration number
+  - Fills password field with UMS password
+  - Auto-submits the login form
+
 ## [1.0.1] - 2026-05
 
 ### Added
-- Support for **UMS Portal** (https://ums.lpu.in/lpuums/)
-  - Fills User ID (#txtU) and Password (#TxtpwdAutoId_8767)
+- Support for **UMS Portal** (https://ums.lpu.in/)
+  - Fills User ID and Password 
   - Does not auto-submit (handles CAPTCHA requirement)
 - Support for **My Account Internet Portal** (https://myaccountinternet.lpu.in/)
   - Fills username as `regNo@lpu.com` format

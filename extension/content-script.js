@@ -182,6 +182,34 @@ function performLogin(data) {
             }
             return;
         }
+
+        // Check if this is the MyClass login page
+        if (window.location.href.includes('myclass.lpu.in') || window.location.href.includes('myexam.lpu.in')) {
+            let usernameInput = document.querySelector('input[name="i"]');
+            let passwordInput = document.querySelector('input[name="p"]') || document.querySelector('#pwd-field');
+            let loginButton = document.querySelector('button[type="submit"]');
+            
+            if (usernameInput && passwordInput && loginButton) {
+                // Fill username with regNo
+                usernameInput.value = data.regNo;
+                usernameInput.dispatchEvent(new Event('input', { bubbles: true }));
+                usernameInput.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Fill password
+                passwordInput.value = data.umsPassword;
+                passwordInput.dispatchEvent(new Event('input', { bubbles: true }));
+                passwordInput.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Submit the form
+                setTimeout(() => {
+                    loginButton.click();
+                    console.log('MyClass login form submitted');
+                }, 50);
+            } else {
+                console.warn('Failed to find MyClass login fields');
+            }
+            return;
+        }
         
     } catch (error) {
         console.error('Error during auto-login:', error);
