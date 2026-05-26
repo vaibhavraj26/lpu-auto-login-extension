@@ -103,4 +103,4 @@ If you encounter issues:
 
 ---
 
-**Note**: This extension is for personal use only. Do not share your credentials.
+**Note**: This extension is for personal use only. Do not share your credentials with other. 
