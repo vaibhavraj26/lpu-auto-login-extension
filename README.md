@@ -99,7 +99,7 @@ If you encounter issues:
 1. Check that you're on the correct URL: https://internet.lpu.in/24online/servlet/E24onlineHTTPClient
 2. Clear your browser cache (Ctrl+Shift+Delete)
 3. Reload the extension in `chrome://extensions/`
-4. Try re-entering your credentials
+4. Try re-entering your credentials and click save
 
 ---
 
